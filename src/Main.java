@@ -18,6 +18,7 @@ public class Main {
         BookOperations bookOperations = new BookOperations();
         AuthorOperations authorOperations = new AuthorOperations();
         CustomerOperations customerOperations = new CustomerOperations();
+        OrderOperations orderOperations = new OrderOperations();
 
         Connection conn=db.connect_to_db();
 
@@ -81,8 +82,12 @@ public class Main {
 //        customerOperations.deleteCustomer(5);
 
 
+    // Order Operations
+//        orderOperations.deleteOrder(19);
 
-//        db.deleteOrder(21);
+//        orderOperations.updateOrderDetails(34, Arrays.asList(2), Arrays.asList(2));
+
+    // Transaction Operation
 
 //        List<OrderRequest> orderRequests = new ArrayList<>();
 //        orderRequests.add(new OrderRequest(3,
