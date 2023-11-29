@@ -4,6 +4,14 @@ import java.util.List;
 
 public class Book {
 
+    public Book(int bookId, String title, String genre, double price, int stockQuantity) {
+        this.bookId = bookId;
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+    }
+
     public Book(int bookId, String title, String genre, double price, int stockQuantity, Author author, Order order) {
         this.bookId = bookId;
         this.title = title;
@@ -13,13 +21,6 @@ public class Book {
         this.author = author;
         this.order = order;
     }
-    public Book(int bookId, String title, String genre, double price, int stockQuantity) {
-        this.bookId = bookId;
-        this.title = title;
-        this.genre = genre;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-    }
 
     public Book(int bookId, String title, String genre, double price, int stockQuantity, Author author) {
         this.bookId = bookId;
@@ -28,6 +29,15 @@ public class Book {
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.author = author;
+    }
+
+
+    public Book(String title, String genre, double price, int stockQuantity, int authorId) {
+        this.title = title;
+        this.genre = genre;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.author = new Author(authorId, null, null, null); // Create a dummy Author with the given authorId
     }
 
 

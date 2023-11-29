@@ -28,26 +28,6 @@ public class DbFunctions {
         return conn;
     }
 
-    public void insertBook(Book book) {
-        try (Connection conn = connect_to_db();
-             PreparedStatement pstmt = conn.prepareStatement(
-                     "INSERT INTO books (title, genre, price, stock_quantity, author_id) VALUES (?, ?, ?, ?, ?)")) {
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getGenre());
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getStockQuantity());
-            pstmt.setInt(5, book.getAuthor().getAuthorId());
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Book inserted successfully");
-            } else {
-                System.out.println("Failed to insert book");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void insertAuthor(Author author) {
         try (Connection conn = connect_to_db();
@@ -89,31 +69,31 @@ public class DbFunctions {
     }
 
     // This is retrieve part
-    public List<Book> retrieveAllBooks() {
-        List<Book> books = new ArrayList<>();
-
-        try (Connection conn = connect_to_db();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM books")) {
-
-            while (rs.next()) {
-                int bookId = rs.getInt("book_id");
-                String title = rs.getString("title");
-                String genre = rs.getString("genre");
-                double price = rs.getDouble("price");
-                int stockQuantity = rs.getInt("stock_quantity");
-
-                // Create a Book object
-                Book book = new Book(bookId, title, genre, price, stockQuantity);
-
-                // Add the book to the list
-                books.add(book);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return books;
-    }
+//    public List<Book> retrieveAllBooks() {
+//        List<Book> books = new ArrayList<>();
+//
+//        try (Connection conn = connect_to_db();
+//             Statement stmt = conn.createStatement();
+//             ResultSet rs = stmt.executeQuery("SELECT * FROM books")) {
+//
+//            while (rs.next()) {
+//                int bookId = rs.getInt("book_id");
+//                String title = rs.getString("title");
+//                String genre = rs.getString("genre");
+//                double price = rs.getDouble("price");
+//                int stockQuantity = rs.getInt("stock_quantity");
+//
+//                // Create a Book object
+//                Book book = new Book(bookId, title, genre, price, stockQuantity);
+//
+//                // Add the book to the list
+//                books.add(book);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return books;
+//    }
 
     public List<Author> retrieveAllAuthors() {
         List<Author> authors = new ArrayList<>();
@@ -220,90 +200,90 @@ public class DbFunctions {
     // This is update part
 
     //Update book
-    public void updateBook(int bookId, String newTitle, String newGenre, double newPrice, int newStockQuantity, int newAuthorId) {
-        try (Connection conn = connect_to_db()) {
-            // Retrieve the existing book based on the provided bookId
-            Book existingBook = findBookById(bookId);
-
-            if (existingBook == null) {
-                System.out.println("Book not found");
-                return;
-            }
-
-            if (!" ".equals(newTitle)) {
-                existingBook.setTitle(newTitle);
-            }
-            if (!" ".equals(newGenre)) {
-                existingBook.setGenre(newGenre);
-            }
-            if (newPrice >= 0) {
-                existingBook.setPrice(newPrice);
-            }
-            if (newStockQuantity >= 0) {
-                existingBook.setStockQuantity(newStockQuantity);
-            }
-
-            // If a new authorId is provided, update the author of the book
-            if (newAuthorId > 0) {
-                Author newAuthor = findAuthorById(newAuthorId);
-                existingBook.setAuthor(newAuthor);
-            }
-
-            // Update the book in the database
-            updateBookInDatabase(existingBook);
-
-            System.out.println("Book updated successfully");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Book findBookById(int bookId) throws SQLException {
-        try (Connection conn = connect_to_db();
-             PreparedStatement pstmt = conn.prepareStatement("SELECT b.*, a.* FROM books b JOIN authors a ON b.author_id = a.author_id WHERE b.book_id = ?")) {
-            pstmt.setInt(1, bookId);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    // Populate and return the book object
-                    return extractBookFromResultSet(rs);
-                }
-            }
-        }
-        return null;
-    }
-
-    public void updateBookInDatabase(Book book) throws SQLException {
-        try (Connection conn = connect_to_db();
-             PreparedStatement pstmt = conn.prepareStatement("UPDATE books SET title = ?, genre = ?, price = ?, stock_quantity = ?, author_id = ? WHERE book_id = ?")) {
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getGenre());
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getStockQuantity());
-            pstmt.setInt(5, book.getAuthor().getAuthorId());
-            pstmt.setInt(6, book.getBookId());
-
-            pstmt.executeUpdate();
-        }
-    }
-
-    private Book extractBookFromResultSet(ResultSet rs) throws SQLException {
-        int bookId = rs.getInt("book_id");
-        String title = rs.getString("title");
-        String genre = rs.getString("genre");
-        double price = rs.getDouble("price");
-        int stockQuantity = rs.getInt("stock_quantity");
-
-        // Extract author attributes and create an Author object
-        int authorId = rs.getInt("author_id");
-        String authorName = rs.getString("author_name");
-        LocalDate birthDate = rs.getDate("birth_date").toLocalDate();
-        String country = rs.getString("country");
-        Author author = new Author(authorId, authorName, birthDate, country);
-
-        // Create and return the Book object
-        return new Book(bookId, title, genre, price, stockQuantity, author);
-    }
+//    public void updateBook(int bookId, String newTitle, String newGenre, double newPrice, int newStockQuantity, int newAuthorId) {
+//        try (Connection conn = connect_to_db()) {
+//            // Retrieve the existing book based on the provided bookId
+//            Book existingBook = findBookById(bookId);
+//
+//            if (existingBook == null) {
+//                System.out.println("Book not found");
+//                return;
+//            }
+//
+//            if (!" ".equals(newTitle)) {
+//                existingBook.setTitle(newTitle);
+//            }
+//            if (!" ".equals(newGenre)) {
+//                existingBook.setGenre(newGenre);
+//            }
+//            if (newPrice >= 0) {
+//                existingBook.setPrice(newPrice);
+//            }
+//            if (newStockQuantity >= 0) {
+//                existingBook.setStockQuantity(newStockQuantity);
+//            }
+//
+//            // If a new authorId is provided, update the author of the book
+//            if (newAuthorId > 0) {
+//                Author newAuthor = findAuthorById(newAuthorId);
+//                existingBook.setAuthor(newAuthor);
+//            }
+//
+//            // Update the book in the database
+//            updateBookInDatabase(existingBook);
+//
+//            System.out.println("Book updated successfully");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public Book findBookById(int bookId) throws SQLException {
+//        try (Connection conn = connect_to_db();
+//             PreparedStatement pstmt = conn.prepareStatement("SELECT b.*, a.* FROM books b JOIN authors a ON b.author_id = a.author_id WHERE b.book_id = ?")) {
+//            pstmt.setInt(1, bookId);
+//
+//            try (ResultSet rs = pstmt.executeQuery()) {
+//                if (rs.next()) {
+//                    // Populate and return the book object
+//                    return extractBookFromResultSet(rs);
+//                }
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public void updateBookInDatabase(Book book) throws SQLException {
+//        try (Connection conn = connect_to_db();
+//             PreparedStatement pstmt = conn.prepareStatement("UPDATE books SET title = ?, genre = ?, price = ?, stock_quantity = ?, author_id = ? WHERE book_id = ?")) {
+//            pstmt.setString(1, book.getTitle());
+//            pstmt.setString(2, book.getGenre());
+//            pstmt.setDouble(3, book.getPrice());
+//            pstmt.setInt(4, book.getStockQuantity());
+//            pstmt.setInt(5, book.getAuthor().getAuthorId());
+//            pstmt.setInt(6, book.getBookId());
+//
+//            pstmt.executeUpdate();
+//        }
+//    }
+//
+//    private Book extractBookFromResultSet(ResultSet rs) throws SQLException {
+//        int bookId = rs.getInt("book_id");
+//        String title = rs.getString("title");
+//        String genre = rs.getString("genre");
+//        double price = rs.getDouble("price");
+//        int stockQuantity = rs.getInt("stock_quantity");
+//
+//        // Extract author attributes and create an Author object
+//        int authorId = rs.getInt("author_id");
+//        String authorName = rs.getString("author_name");
+//        LocalDate birthDate = rs.getDate("birth_date").toLocalDate();
+//        String country = rs.getString("country");
+//        Author author = new Author(authorId, authorName, birthDate, country);
+//
+//        // Create and return the Book object
+//        return new Book(bookId, title, genre, price, stockQuantity, author);
+//    }
 
 
 
@@ -459,21 +439,21 @@ public class DbFunctions {
     }
 
     // This is delete-part
-    public void deleteBook(int bookId) {
-        try (Connection conn = connect_to_db();
-             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM books WHERE book_id = ?")) {
-            pstmt.setInt(1, bookId);
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Book deleted successfully");
-            } else {
-                System.out.println("Failed to delete book");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void deleteBook(int bookId) {
+//        try (Connection conn = connect_to_db();
+//             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM books WHERE book_id = ?")) {
+//            pstmt.setInt(1, bookId);
+//
+//            int affectedRows = pstmt.executeUpdate();
+//            if (affectedRows > 0) {
+//                System.out.println("Book deleted successfully");
+//            } else {
+//                System.out.println("Failed to delete book");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     public void deleteAuthor(int authorId) {
         try (Connection conn = connect_to_db();
              PreparedStatement pstmt = conn.prepareStatement("DELETE FROM authors WHERE author_id = ?")) {
@@ -506,222 +486,113 @@ public class DbFunctions {
     }
 
 
-
-
-    // These methods work for 4th step.
-//    public void placeOrder(int customerId, int bookId, int quantity) {
-//        try (Connection conn = connect_to_db()) {
-//            conn.setAutoCommit(false);
-//
-//            // Check if enough stock is available
-//            int availableStock = checkAvailableStock(conn, bookId);
-//            if (availableStock >= quantity) {
-//                // Insert order and order details
-//                int orderId = insertOrder(conn, customerId);
-//                insertOrderDetails(conn, orderId, bookId, quantity);
-//
-//                // Update the total_amount based on the order details
-//                updateOrderTotalAmount(conn, orderId);
-//
-//                // Update stock quantity
-//                updateStockQuantity(conn, bookId, availableStock - quantity);
-//
-//                // Commit the transaction
-//                conn.commit();
-//                System.out.println("Order placed successfully.");
-//            } else {
-//                System.out.println("Not enough stock available for the order.");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            System.out.println("Failed to place the order. Rolling back transaction.");
-//        }
-//    }
-
-    public void placeOrder(OrderRequest orderRequest) {
+    public void deleteOrder(int orderId) {
         try (Connection conn = connect_to_db()) {
             conn.setAutoCommit(false);
 
-            // Iterate through book IDs and quantities
-            for (int i = 0; i < orderRequest.getBookIds().size(); i++) {
-                int bookId = orderRequest.getBookIds().get(i);
-                int quantity = orderRequest.getQuantities().get(i);
+            // Delete entries from order_details
+            deleteOrderDetails(conn, orderId);
 
-                // Check if enough stock is available
-                int availableStock = checkAvailableStock(conn, bookId);
+            // Update stock quantity in books table
+            updateStockQuantityForDeletedOrder(conn, orderId);
 
-                if (availableStock >= quantity) {
-                    // Insert order and order details
-                    int orderId = insertOrder(conn, orderRequest.getCustomerId());
-                    insertOrderDetails(conn, orderId, bookId, quantity);
+            // Delete the order itself
+            deleteOrderFromOrders(conn, orderId);
 
-                    // Update the total_amount based on the order details
-                    updateOrderTotalAmount(conn, orderId);
-
-                    // Update stock quantity
-                    updateStockQuantity(conn, bookId, availableStock - quantity);
-                } else {
-                    System.out.println("Not enough stock available for the order.");
-                    conn.rollback();
-                    return; // Exit the method if any order fails
-                }
-            }
-
-            // Commit the transaction if all orders are successful
+            // Commit the transaction
             conn.commit();
-            System.out.println("Order placed successfully for customer " + orderRequest.getCustomerId());
+            System.out.println("Order deleted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Failed to place the order. Rolling back transaction.");
+            System.out.println("Failed to delete order. Rolling back transaction.");
         }
     }
 
-    private int insertOrder(Connection conn, int customerId) throws SQLException {
+    private void deleteOrderDetails(Connection conn, int orderId) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO orders (customer_id, order_date, total_amount) VALUES (?, CURRENT_DATE, 0) RETURNING order_id")) {
-            pstmt.setInt(1, customerId);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("order_id");
-            } else {
-                throw new SQLException("Failed to insert order.");
-            }
-        }
-    }
-    private void updateOrderTotalAmount(Connection conn, int orderId) throws SQLException {
-        double totalAmount = calculateTotalAmount(conn, orderId);
-
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE orders SET total_amount = ? WHERE order_id = ?")) {
-            pstmt.setDouble(1, totalAmount);
-            pstmt.setInt(2, orderId);
+                "DELETE FROM order_details WHERE order_id = ?")) {
+            pstmt.setInt(1, orderId);
             pstmt.executeUpdate();
         }
     }
-    private double calculateTotalAmount(Connection conn, int orderId) throws SQLException {
-        double totalAmount = 0.0;
 
+    private void updateStockQuantityForDeletedOrder(Connection conn, int orderId) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "SELECT od.quantity, b.price " +
+                "UPDATE books " +
+                        "SET stock_quantity = stock_quantity + od.quantity " +
                         "FROM order_details od " +
-                        "JOIN books b ON od.book_id = b.book_id " +
-                        "WHERE od.order_id = ?")) {
+                        "WHERE books.book_id = od.book_id AND od.order_id = ?")) {
+            pstmt.setInt(1, orderId);
+            pstmt.executeUpdate();
+        }
+    }
+
+    private void deleteOrderFromOrders(Connection conn, int orderId) throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "DELETE FROM orders WHERE order_id = ?")) {
+            pstmt.setInt(1, orderId);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void updateOrderDetails(int orderId, List<Integer> newBookIds, List<Integer> newQuantities) {
+        try (Connection conn = connect_to_db()) {
+            conn.setAutoCommit(false);
+
+            // Retrieve existing order details
+            List<OrderDetail> existingOrderDetails = getOrderDetailsByOrderId(conn, orderId);
+
+            if (existingOrderDetails != null && !existingOrderDetails.isEmpty()) {
+                // Update order details based on the provided lists
+                for (int i = 0; i < existingOrderDetails.size(); i++) {
+                    int orderDetailId = existingOrderDetails.get(i).getOrderDetailId();
+                    int updatedBookId = (i < newBookIds.size()) ? newBookIds.get(i) : existingOrderDetails.get(i).getBookId();
+                    int updatedQuantity = (i < newQuantities.size()) ? newQuantities.get(i) : existingOrderDetails.get(i).getQuantity();
+
+                    // Update each order detail
+                    updateOrderDetailInDatabase(conn, orderDetailId, updatedBookId, updatedQuantity);
+                }
+
+                // Commit the transaction
+                conn.commit();
+                System.out.println("Order details updated successfully.");
+            } else {
+                System.out.println("No order details found for the specified order.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to update order details. Rolling back transaction.");
+        }
+    }
+
+    private List<OrderDetail> getOrderDetailsByOrderId(Connection conn, int orderId) throws SQLException {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT * FROM order_details WHERE order_id = ?")) {
             pstmt.setInt(1, orderId);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                int quantity = rs.getInt("quantity");
-                double price = rs.getDouble("price");
-                totalAmount += quantity * price;
+                OrderDetail orderDetail = new OrderDetail(
+                        rs.getInt("order_detail_id"),
+                        rs.getInt("order_id"),
+                        rs.getInt("book_id"),
+                        rs.getInt("quantity")
+                );
+                orderDetails.add(orderDetail);
             }
         }
+        return orderDetails;
+    }
 
-        return totalAmount;
-    }
-    private int checkAvailableStock(Connection conn, int bookId) throws SQLException {
+    private void updateOrderDetailInDatabase(Connection conn, int orderDetailId, int newBookId, int newQuantity) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "SELECT stock_quantity FROM books WHERE book_id = ?")) {
-            pstmt.setInt(1, bookId);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("stock_quantity");
-            } else {
-                throw new SQLException("Book not found.");
-            }
-        }
-    }
-    // Helper method to insert order details into the OrderDetails table
-    private void insertOrderDetails(Connection conn, int orderId, int bookId, int quantity) throws SQLException {
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO order_details (order_id, book_id, quantity) VALUES (?, ?, ?)")) {
-            pstmt.setInt(1, orderId);
-            pstmt.setInt(2, bookId);
-            pstmt.setInt(3, quantity);
-            pstmt.executeUpdate();
-        }
-    }
-    private void updateStockQuantity(Connection conn, int bookId, int newStockQuantity) throws SQLException {
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE books SET stock_quantity = ? WHERE book_id = ?")) {
-            pstmt.setInt(1, newStockQuantity);
-            pstmt.setInt(2, bookId);
+                "UPDATE order_details SET book_id = ?, quantity = ? WHERE order_detail_id = ?")) {
+            pstmt.setInt(1, newBookId);
+            pstmt.setInt(2, newQuantity);
+            pstmt.setInt(3, orderDetailId);
             pstmt.executeUpdate();
         }
     }
 
-
-
-    // Accessing metadata (5th step)
-    // a. Display names and structures of the tables in the DB
-    public void displayTablesInfo() {
-        try (Connection conn = connect_to_db()) {
-            DatabaseMetaData metaData = conn.getMetaData();
-            ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
-
-            while (tables.next()) {
-                String tableName = tables.getString("TABLE_NAME");
-                System.out.println("Table: " + tableName);
-
-                // Display details on columns of the table
-                displayColumnsInfo(conn, tableName);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // b. Display details on columns of tables
-    public void displayColumnsInfo(Connection conn, String tableName) {
-        try {
-            DatabaseMetaData metaData = conn.getMetaData();
-            ResultSet columns = metaData.getColumns(null, null, tableName, null);
-
-            while (columns.next()) {
-                String columnName = columns.getString("COLUMN_NAME");
-                String dataType = columns.getString("TYPE_NAME");
-                int columnSize = columns.getInt("COLUMN_SIZE");
-                boolean isNullable = columns.getBoolean("IS_NULLABLE");
-
-                System.out.println("  Column: " + columnName +
-                        ", Type: " + dataType +
-                        ", Size: " + columnSize +
-                        ", Nullable: " + (isNullable ? "Yes" : "No"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // c. Display information on primary and foreign keys
-    public void displayKeysInfo(Connection conn, String tableName) {
-        try {
-            DatabaseMetaData metaData = conn.getMetaData();
-
-            // Display primary keys
-            ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
-            System.out.print("Primary Keys: ");
-            while (primaryKeys.next()) {
-                String primaryKeyColumn = primaryKeys.getString("COLUMN_NAME");
-                System.out.print(primaryKeyColumn + " ");
-            }
-            System.out.println();
-
-            // Display foreign keys
-            ResultSet foreignKeys = metaData.getImportedKeys(null, null, tableName);
-            System.out.print("Foreign Keys: ");
-            while (foreignKeys.next()) {
-                String foreignKeyColumn = foreignKeys.getString("FKCOLUMN_NAME");
-                String referencedTable = foreignKeys.getString("PKTABLE_NAME");
-                String referencedColumnName = foreignKeys.getString("PKCOLUMN_NAME");
-
-                System.out.print(foreignKeyColumn + " (References " + referencedTable +
-                        "." + referencedColumnName + ") ");
-            }
-            System.out.println();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -9,6 +9,12 @@ public class OrderRequest {
     private List<Integer> bookIds;
     private List<Integer> quantities;
 
+//    public OrderRequest(int customerId, List<Integer> bookIds, List<Integer> quantities) {
+//        this.customerId = customerId;
+//        this.bookIds = bookIds;
+//        this.quantities = quantities;
+//    }
+
     public OrderRequest(int customerId, List<Integer> bookIds, List<Integer> quantities) {
         this.customerId = customerId;
         this.bookIds = bookIds;

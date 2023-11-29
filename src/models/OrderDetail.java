@@ -5,10 +5,19 @@ public class OrderDetail {
     private int orderDetailId;
 
     private Order order;
+    private  int orderId;
 
     private Book book;
+    private int bookId;
 
     private int quantity;
+
+    public OrderDetail(int orderDetailId, int orderId, int bookId, int quantity) {
+        this.orderDetailId = orderDetailId;
+        this.orderId = orderId;
+        this.bookId = bookId;
+        this.quantity = quantity;
+    }
 
     // Getters and Setters
     public int getOrderDetailId() {
@@ -42,5 +51,7 @@ public class OrderDetail {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public int getBookId() { return (book != null) ? book.getBookId() : -1; }
 }
 
