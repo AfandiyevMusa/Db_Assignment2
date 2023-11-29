@@ -29,24 +29,6 @@ public class DbFunctions {
     }
 
 
-    public void insertAuthor(Author author) {
-        try (Connection conn = connect_to_db();
-             PreparedStatement pstmt = conn.prepareStatement(
-                     "INSERT INTO authors (author_name, birth_date, country) VALUES (?, ?, ?)")) {
-            pstmt.setString(1, author.getAuthorName());
-            pstmt.setDate(2, Date.valueOf(author.getBirthDate())); // Assuming birthDate is in the format "YYYY-MM-DD"
-            pstmt.setString(3, author.getCountry());
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Author inserted successfully");
-            } else {
-                System.out.println("Failed to insert author");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void insertCustomer(Customer customer) {
         try (Connection conn = connect_to_db();
@@ -66,59 +48,6 @@ public class DbFunctions {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    // This is retrieve part
-//    public List<Book> retrieveAllBooks() {
-//        List<Book> books = new ArrayList<>();
-//
-//        try (Connection conn = connect_to_db();
-//             Statement stmt = conn.createStatement();
-//             ResultSet rs = stmt.executeQuery("SELECT * FROM books")) {
-//
-//            while (rs.next()) {
-//                int bookId = rs.getInt("book_id");
-//                String title = rs.getString("title");
-//                String genre = rs.getString("genre");
-//                double price = rs.getDouble("price");
-//                int stockQuantity = rs.getInt("stock_quantity");
-//
-//                // Create a Book object
-//                Book book = new Book(bookId, title, genre, price, stockQuantity);
-//
-//                // Add the book to the list
-//                books.add(book);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return books;
-//    }
-
-    public List<Author> retrieveAllAuthors() {
-        List<Author> authors = new ArrayList<>();
-
-        try (Connection conn = connect_to_db();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM authors")) {
-
-            while (rs.next()) {
-                int authorId = rs.getInt("author_id");
-                String authorName = rs.getString("author_name");
-                Date birthDate = rs.getDate("birth_date");
-                String country = rs.getString("country");
-
-                // Create an Author object
-                Author author = new Author(authorId, authorName, birthDate.toLocalDate(), country);
-
-                // Add the author to the list
-                authors.add(author);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return authors;
     }
 
     public List<Customer> retrieveAllCustomers() {

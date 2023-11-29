@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
@@ -61,7 +62,17 @@ public class Book {
     private Author author;
     private Order order;
 
+    private List<Order> orders = new ArrayList<>();
+
     // Getters and Setters...
+
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
 
     public int getBookId() {
         return bookId;

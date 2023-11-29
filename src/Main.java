@@ -1,10 +1,5 @@
-import methods.BookOperations;
-import methods.MetaData;
-import methods.TransactionProcess;
-import models.Author;
-import models.Book;
-import models.Order;
-import models.OrderRequest;
+import methods.*;
+import models.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,72 +16,72 @@ public class Main {
         MetaData metaData = new MetaData();
         TransactionProcess transactionProcess = new TransactionProcess();
         BookOperations bookOperations = new BookOperations();
+        AuthorOperations authorOperations = new AuthorOperations();
+        CustomerOperations customerOperations = new CustomerOperations();
 
         Connection conn=db.connect_to_db();
 
 
-        // Book CRUD
+    // BOOK CRUD
 
 //        Book newBook = new Book("The Night Circus", "Fantasy", 39.99, 80, 3);
 //        bookOperations.insertBook(newBook);
 
+        // Show all books
 //        List<models.Book> books = bookOperations.retrieveAllBooks();
 //        for (models.Book book : books) {
 //            System.out.println(book);
 //        }
 
-        //It gives all books informations with authors and orders (there are duplicates in here)
-//        List<models.Book> books = bookOperations.retrieveAllBooksWithAuthorsAndOrders();
-//        for (models.Book book : books) {
-//            System.out.println(book);
-//        }
+        // Show all orders with given bookId
+//        System.out.println(bookOperations.retrieveBookInfoAndOrdersByBookId(2));
 
-        //It gives all orders informations with given bookId.
-        // It just return order informations about unique book.
-//        List<Order> orders = bookOperations.retrieveOrdersByBookId(1);
-//        for (Order order: orders){
-//            System.out.println(order);
-//        }
-
+        // Updating Book
 //        bookOperations.updateBook(10, " ", "Fantastic", 19.99, 24, 5);
 
-//        bookOperations.deleteBook(10);
+        // Deleting Book
+//        bookOperations.deleteBook(16);
 
 
 
-        // CREATING AUTHOR
-//        Author newAuthor = new Author("John Doe", LocalDate.parse("1990-01-01"), "United States");
-//        db.insertAuthor(newAuthor);
+    // AUTHOR CRUD
+//        Author newAuthor = new Author("Musa Afandiyev", LocalDate.parse("2003-09-01"), "Azerbaijan");
+//        authorOperations.insertAuthor(newAuthor);
 
-        // CREATING CUSTOMER
-//        Customer newCustomer = new Customer("John", "Doe", "john.doe@gmail.com", "123-456-7890");
-//        db.insertCustomer(newCustomer);
-
-
-
-
-//        List<models.Author> authors = db.retrieveAllAuthors();
+        // Show all AUTHORS
+//        List<models.Author> authors = authorOperations.retrieveAllAuthors();
 //        for (models.Author author : authors) {
 //            System.out.println(author);
 //        }
 
-//        List<models.Customer> customers = db.retrieveAllCustomers();
+        // Update Author
+//        authorOperations.updateAuthor(9, "Rauf Rasulzada", "2003-09-01", "Azerbaijan");
+
+        // Delete Author
+//        authorOperations.deleteAuthor(3);
+
+
+
+
+    //  CUSTOMER CRUD
+//        Customer newCustomer = new Customer("Musa", "Afandiyev", "musa.afandiyev@gmail.com", "123-456-7890");
+//        customerOperations.insertCustomer(newCustomer);
+
+        // Show All Customers
+//        List<models.Customer> customers = customerOperations.retrieveAllCustomers();
 //        for (models.Customer customer : customers) {
 //            System.out.println(customer);
 //        }
 
-//        List<models.Book> booksWithAuthorsAndOrders = db.retrieveAllBooksWithAuthorsAndOrders();
-//        for (models.Book book : booksWithAuthorsAndOrders) {
-//            System.out.println(book);
-//        }
-
-//        db.updateAuthor(1, " ", "2003-09-01", "Azerbaijan");
-//        db.updateCustomer(3, " ", "Anderson", "bob.anderson@gmail.com", "609-803-8888");
+        // Update Customer
+//        customerOperations.updateCustomer(3, "Bob", "Anderson", "bob.anderson@gmail.com", "609-803-8888");
 //        db.updateOrderDetails(20, Arrays.asList(1), Arrays.asList(2));
 
+        // Delete Customer
+//        customerOperations.deleteCustomer(5);
 
-//        db.deleteAuthor(7);
-//        db.deleteCustomer(4);
+
+
 //        db.deleteOrder(21);
 
 //        List<OrderRequest> orderRequests = new ArrayList<>();
