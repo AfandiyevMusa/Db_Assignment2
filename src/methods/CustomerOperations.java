@@ -76,6 +76,29 @@ public class CustomerOperations {
         return customers;
     }
 
+    public Customer retrieveCustomerById(int customerId) {
+        try (Connection conn = connect_to_db();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT * FROM customers WHERE customer_id = ?")) {
+
+            pstmt.setInt(1, customerId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String firstName = rs.getString("first_name");
+                    String lastName = rs.getString("last_name");
+                    String email = rs.getString("email");
+                    String phone = rs.getString("phone");
+
+                    return new Customer(customerId, firstName, lastName, email, phone);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Return null if the customer is not found or an error occurs
+    }
+
 
     public void updateCustomer(int customerId, String newFirstName, String newLastName,
                                String newEmail, String newPhone) {

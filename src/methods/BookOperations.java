@@ -118,24 +118,20 @@ public class BookOperations {
 
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
-                        // Extract book details
                         int retrievedBookId = rs.getInt("book_id");
                         String title = rs.getString("title");
                         String genre = rs.getString("genre");
                         double price = rs.getDouble("price");
                         int stockQuantity = rs.getInt("stock_quantity");
 
-                        // Extract author details
                         int authorId = rs.getInt("author_id");
                         String authorName = rs.getString("author_name");
-                        // Assuming birth_date is a java.sql.Date, adjust accordingly
+
                         java.sql.Date birthDate = rs.getDate("birth_date");
                         String country = rs.getString("country");
 
-                        // Create Author object
                         Author author = new Author(authorId, authorName, birthDate.toLocalDate(), country);
 
-                        // Create Book object
                         book = new Book(retrievedBookId, title, genre, price, stockQuantity, author);
                     }
                 }

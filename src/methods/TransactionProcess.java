@@ -64,7 +64,6 @@ public class TransactionProcess {
             System.out.println("Failed to place the order. Rolling back transaction.");
         }
     }
-
     private int insertOrder(Connection conn, int customerId) throws SQLException {
         try (PreparedStatement pstmt = conn.prepareStatement(
                 "INSERT INTO orders (customer_id, order_date, total_amount) VALUES (?, CURRENT_DATE, 0) RETURNING order_id")) {

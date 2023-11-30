@@ -39,6 +39,7 @@ public class MetaData {
 
                 // Display information on primary and foreign keys
                 displayKeysInfo(conn, tableName);
+                System.out.println("------------------------------------------------------------");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +80,6 @@ public class MetaData {
         try {
             DatabaseMetaData metaData = conn.getMetaData();
 
-            // Display details on columns of the table
             ResultSet columns = metaData.getColumns(null, null, tableName, null);
             System.out.println("Columns Info for Table: " + tableName);
             while (columns.next()) {

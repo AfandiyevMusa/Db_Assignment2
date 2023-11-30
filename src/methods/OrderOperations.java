@@ -59,11 +59,13 @@ public class OrderOperations {
     }
 
     private void updateStockQuantityForDeletedOrder(Connection conn, int orderId) throws SQLException {
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE books " +
-                        "SET stock_quantity = stock_quantity + od.quantity " +
-                        "FROM order_details od " +
-                        "WHERE books.book_id = od.book_id AND od.order_id = ?")) {
+        String query = "UPDATE books " +
+                "SET stock_quantity = stock_quantity + od.quantity " +
+                "FROM order_details od " +
+                "WHERE books.book_id = od.book_id AND od.order_id = ?";
+        System.out.println("SQL Query: " + query);
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, orderId);
             pstmt.executeUpdate();
         }
@@ -76,9 +78,6 @@ public class OrderOperations {
             pstmt.executeUpdate();
         }
     }
-
-
-
 
 
     public void updateOrderDetails(int orderId, List<Integer> newBookIds, List<Integer> newQuantities) {
@@ -140,4 +139,31 @@ public class OrderOperations {
             pstmt.executeUpdate();
         }
     }
+
+    public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+
+        try (Connection conn = connect_to_db();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT * FROM order_details WHERE order_id = ?")) {
+
+            pstmt.setInt(1, orderId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    OrderDetail orderDetail = new OrderDetail(
+                            rs.getInt("order_detail_id"),
+                            rs.getInt("order_id"),
+                            rs.getInt("book_id"),
+                            rs.getInt("quantity")
+                    );
+                    orderDetails.add(orderDetail);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orderDetails;
+    }
+
 }

@@ -74,7 +74,36 @@ public class AuthorOperations {
         return authors;
     }
 
-    public void updateAuthor(int authorId, String newAuthorName, String newBirthDate, String newCountry) throws SQLException {
+    public Author retrieveAuthorById(int authorId) {
+        try (Connection conn = connect_to_db();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT * FROM authors WHERE author_id = ?")) {
+
+            pstmt.setInt(1, authorId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String authorName = rs.getString("author_name");
+
+                    // Check if birth_date is null
+                    LocalDate birthDate = null;
+                    Date date = rs.getDate("birth_date");
+                    if (date != null) {
+                        birthDate = date.toLocalDate();
+                    }
+
+                    String country = rs.getString("country");
+
+                    return new Author(authorId, authorName, birthDate, country);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Return null if the author is not found or an error occurs
+    }
+
+    public void updateAuthor(int authorId, String newAuthorName, LocalDate newBirthDate, String newCountry) throws SQLException {
         // Retrieve existing author
         Author existingAuthor = findAuthorById(authorId);
 
@@ -89,7 +118,7 @@ public class AuthorOperations {
         }
         if (!" ".equals(newBirthDate)) {
             // Parse the newBirthDate string to LocalDate and set the birthDate
-            existingAuthor.setBirthDate(LocalDate.parse(newBirthDate));
+            existingAuthor.setBirthDate(newBirthDate);
         }
         if (!" ".equals(newCountry)) {
             existingAuthor.setCountry(newCountry);
