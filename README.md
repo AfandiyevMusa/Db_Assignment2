@@ -42,7 +42,7 @@ PgAdmin4
 Setup
 
 1. Clone the repository:
-   git clone https://github.com/yourusername/yourproject.git
+   git clone https://github.com/AfandiyevMusa/Db_Assignment2.git
    cd yourproject
 2. Setup the PostgreSQL database and configure the connection details in DbFunctions class.
 3. Run the application:
