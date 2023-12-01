@@ -2,8 +2,7 @@ Database | Assignment II
 
 **Console Application for Bookstore Management**
 
-Overview
-
+**Overview:**
     This Java console application serves as a bookstore management system, allowing users to perform various operations related to books, authors, customers, orders, and transactions. The application interacts with a PostgreSQL database to store and retrieve information.
 
 **Features:**
