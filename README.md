@@ -1,54 +1,58 @@
 Database | Assignment II
 
-**Project Name**
+**Console Application for Bookstore Management**
 
-Brief description of your project.
+Overview
 
-Table of Contents
+    This Java console application serves as a bookstore management system, allowing users to perform various operations related to books, authors, customers, orders, and transactions. The application interacts with a PostgreSQL database to store and retrieve information.
 
-Introduction
-Features
-Prerequisites
+**Features:**
+
+1. Book Management:
+    Create a new book, providing details such as title, genre, price, stock quantity, and author ID.
+    View a list of all books.
+    Display detailed information about a specific book, including associated orders.
+2. Author Management:
+    Create a new author, specifying details like name, birth date, and country.
+    View a list of all authors.
+    Update author information.
+    Delete an author.
+3. Customer Management:
+    Create a new customer with first name, last name, email, and phone details.
+    View a list of all customers.
+    Update customer information.
+    Delete a customer.
+4. Order Management:
+    Delete an order, including associated order details.
+    Update order details for a specific order.
+5. Transaction Processing:
+    Place a new order, considering available stock quantities.
+    Calculate and update the total amount for an order.
+6. Metadata Information:
+    Display information about tables in the database, including primary and foreign keys.
+    Display detailed column information for a specific table.
+
+**Prerequisites**
+
+Ensure the following software is installed on your system:
+
+Java
+PostgreSQL
+PgAdmin4
+
 Setup
-Usage
-Contributing
-License
-Introduction
 
-Provide a brief introduction to your project, including its purpose and goals. Mention the technologies and tools used in the project.
+1. Clone the repository:
+   git clone https://github.com/yourusername/yourproject.git
+   cd yourproject
+2. Setup the PostgreSQL database and configure the connection details in DbFunctions class.
+3. Run the application:
+   java -jar yourproject.jar
 
-Features
+**Usage**
 
-List and briefly describe the main features of your project.
+Follow the on-screen menu to perform various operations:
 
-Prerequisites
-
-Specify any prerequisites or dependencies required to run your project.
-
-Java (version)
-PostgreSQL (version)
-Other dependencies...
-Setup
-
-Explain the steps to set up your project on a local machine. Include instructions for setting up the database, configuring any environment variables, or installing required packages.
-
-Clone the repository: git clone https://github.com/yourusername/yourproject.git
-Navigate to the project directory: cd yourproject
-Install dependencies: npm install
-...
-Usage
-
-Provide instructions on how to use your project. Include any command-line commands or specific steps needed to run the application.
-
-bash
-Copy code
-java -jar yourproject.jar
-Contributing
-
-Explain how others can contribute to your project. Include information on bug reporting, feature requests, or submitting pull requests.
-
-Fork the project.
-Create a new branch: git checkout -b feature/your-feature
-Commit your changes: git commit -m 'Add new feature'
-Push to the branch: git push origin feature/your-feature
-Submit a pull request.
+1. Create, view, update, and delete books, authors, customers, and orders.
+2. Place new orders and manage order details.
+3. Display metadata information about tables and columns in the database.
